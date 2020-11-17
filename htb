@@ -53,7 +53,7 @@ while test $# -gt 0; do
   esac
 done
 
-sudo -u pachinko cherrytree $BOX.ctd &> /dev/null &
+sudo -u pachinko cherrytree &> /dev/null &
 
 cd /root/htb/boxes/
 if [ -d "/root/htb/boxes/$BOX" ] ; then
