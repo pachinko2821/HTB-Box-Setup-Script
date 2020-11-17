@@ -58,10 +58,9 @@ sudo -u pachinko cherrytree $BOX.ctd &> /dev/null &
 cd /root/htb/boxes/
 if [ -d "/root/htb/boxes/$BOX" ] ; then
   cd $BOX
-  tmux new -s $BOX
 else
   mkdir $BOX
   cd $BOX
   mkdir nmap
-  tmux new -s $BOX
 fi
+tmux new -s $BOX
