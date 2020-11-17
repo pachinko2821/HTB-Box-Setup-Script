@@ -1,0 +1,67 @@
+#!/bin/bash
+
+if [[ $# -eq 0 ]] ; then
+  echo "My Personal Script to help me create my initial setup for HTB Machines"
+  echo " "
+  echo "Options:"
+  echo "-h|--help   Prints this help text and exits"
+  echo "-b|--box    To specify name of the machine you are going to attempt"
+  echo " "
+  echo "Usage:"
+  echo "htb -b <box-name>"
+  echo "OR"
+  echo "htb --box <box-name>"
+  exit 0
+fi
+
+while test $# -gt 0; do
+  case "$1" in
+    -h|--help)
+      echo "My Personal Script to help me create my initial setup for HTB Machines"
+      echo " "
+      echo "Options:"
+      echo "-h|--help   Prints this help text and exits"
+      echo "-b|--box    To specify name of the machine you are going to attempt"
+      echo " "
+      echo "Usage:"
+      echo "htb -b <box-name>"
+      echo "OR"
+      echo "htb --box <box-name>"
+      exit 0
+      ;;
+    -b|--box)
+      shift
+      if test $# -gt 0; then
+        export BOX=$1
+      else
+        echo "Please Specify a box name!"
+        echo "htb -h for more info"
+        exit 1
+      fi
+      shift
+      ;;
+    *)
+      echo "My Personal Script to help me create my initial setup for HTB Machines"
+      echo " "
+      echo "Options:"
+      echo "-b/--box    To specify name of the machine you are going to attempt"
+      echo "Usage:"
+      echo "htb -b <box-name>"
+      echo "OR"
+      break
+      ;;
+  esac
+done
+
+sudo -u pachinko cherrytree $BOX.ctd &> /dev/null &
+
+cd /root/htb/boxes/
+if [ -d "/root/htb/boxes/$BOX" ] ; then
+  cd $BOX
+  tmux new -s $BOX
+else
+  mkdir $BOX
+  cd $BOX
+  mkdir nmap
+  tmux new -s $BOX
+fi
