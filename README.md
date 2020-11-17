@@ -1,8 +1,8 @@
 # HTB-Box-Setup-Script
 
 ## What does the script do?
-  * Creates a dir called <machine-name>
-  * Creates a dir called nmap inside <machine-name> dir
+  * Creates a dir called \<machine-name\>
+  * Creates a dir called nmap inside \<machine-name\> dir
   * Creates and opens a new cherry-tree document for you to take notes
   * Opens a new tmux session for you
 
