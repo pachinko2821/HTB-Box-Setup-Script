@@ -1,32 +1,31 @@
 #!/bin/bash
 
+help_text="$(cat<<-EOF
+My Personal Script to help me create my initial setup for HTB Machines\n
+Options:\n
+-h|--help   Prints this help text and exits\n
+-b|--box    To specify name of the machine you are going to attempt\n
+-f|--fort   To specify name of the fortress you are going to attempt\n
+\n
+Usage:\n
+htb -b <box-name>\n
+htb -f <fort-name>\n
+OR\n
+htb --box <box-name>\n
+htb --fortress <fort-name>\n
+
+EOF
+)" 
+
 if [[ $# -eq 0 ]] ; then
-  echo "My Personal Script to help me create my initial setup for HTB Machines"
-  echo " "
-  echo "Options:"
-  echo "-h|--help   Prints this help text and exits"
-  echo "-b|--box    To specify name of the machine you are going to attempt"
-  echo " "
-  echo "Usage:"
-  echo "htb -b <box-name>"
-  echo "OR"
-  echo "htb --box <box-name>"
+  echo -e $help_text
   exit 0
 fi
 
 while test $# -gt 0; do
   case "$1" in
     -h|--help)
-      echo "My Personal Script to help me create my initial setup for HTB Machines"
-      echo " "
-      echo "Options:"
-      echo "-h|--help   Prints this help text and exits"
-      echo "-b|--box    To specify name of the machine you are going to attempt"
-      echo " "
-      echo "Usage:"
-      echo "htb -b <box-name>"
-      echo "OR"
-      echo "htb --box <box-name>"
+      echo -e $help_text
       exit 0
       ;;
     -b|--box)
@@ -40,27 +39,47 @@ while test $# -gt 0; do
       fi
       shift
       ;;
-    *)
-      echo "My Personal Script to help me create my initial setup for HTB Machines"
-      echo " "
-      echo "Options:"
-      echo "-b/--box    To specify name of the machine you are going to attempt"
-      echo "Usage:"
-      echo "htb -b <box-name>"
-      echo "OR"
+    -f|--fortress)
+      shift
+      if test $# -gt 0; then
+        export FORT=$1
+      else
+        echo "Please Specify a fort name!"
+        echo "htb -h for more info"
+        exit 1
+      fi
+      shift
+      ;;
+      *)
+      echo $help_text
       break
       ;;
   esac
 done
 
-sudo -u pachinko cherrytree &> /dev/null &
+if [ ! -z ${BOX+x} ] ; then
+  cd /root/htb/boxes/
+  if [ -d "/root/htb/boxes/$BOX" ] ; then
+    cd $BOX
+  else
+    mkdir $BOX
+    cd $BOX
+    mkdir nmap
+    sudo -u pachinko touch /home/pachinko/Desktop/htb/boxes/$BOX.ctd
+  fi
+  sudo -u pachinko cherrytree /home/pachinko/Desktop/htb/boxes/$BOX.ctd &> /dev/null &
+  tmux -u -2 new -s $BOX
 
-cd /root/htb/boxes/
-if [ -d "/root/htb/boxes/$BOX" ] ; then
-  cd $BOX
-else
-  mkdir $BOX
-  cd $BOX
-  mkdir nmap
+elif [ ! -z ${FORT+x} ] ; then
+  cd /root/htb/forts/
+  if [ -d "/root/htb/forts/$FORT" ] ; then
+    cd $FORT
+  else
+    mkdir $FORT
+    cd $FORT
+    mkdir nmap
+    sudo -u pachinko touch /home/pachinko/Desktop/htb/forts/$FORT.ctd
+  fi
+  sudo -u pachinko cherrytree /home/pachinko/Desktop/htb/forts/$FORT.ctd &>/dev/null &
+  tmux -u -2 new -s $FORT
 fi
-tmux new -s $BOX
