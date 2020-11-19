@@ -8,7 +8,7 @@
 
 ## What more do I want it to do?
   * I'm contemplating if I need to make a dir for gobuster/fuff/any-web-discovery-script because not all HTB machines use web
-  * I actually don't know, I'll sleep on it maybe
+  * Add nodes to cherry tree?
 
 # Usage
 ```
